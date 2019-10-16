@@ -1,5 +1,5 @@
 class PopupPlace extends PopupImage {
-  constructor(windowPopup, openPopupButton) {
+  constructor(windowPopup, openPopupButton, hendlerSubmit) {
     super(windowPopup);
 
     // текст ошибок в input
@@ -22,6 +22,8 @@ class PopupPlace extends PopupImage {
     this.popupForm.addEventListener('input', this.hendlerInputForm);
     this.popupForm.addEventListener('submit', this.submitForm);
     this.initalInputsListener();
+    // Делаем при нажатии кнопки формы
+    this.hendlerSubmit = hendlerSubmit;
   }
   // методы
 
@@ -91,7 +93,7 @@ class PopupPlace extends PopupImage {
     [item.name, item.link] = [name.value, link.value];
 
     const img = new Image();
-    img.onload = () => mainApi.addCard(item);
+    img.onload = () => this.hendlerSubmit(item);
     img.onerror = () => alert('Ошибка загрузки рисунка');
     img.src = item.link;
 

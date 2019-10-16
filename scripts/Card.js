@@ -1,6 +1,11 @@
 class Card {
-  constructor(item) {
+  constructor(item, profileOwner, handlerClickCard) {
     this.cardParametrs = Object.assign(item);
+
+    this.profileOwner = Object.assign(profileOwner);
+
+    this.handlerClickCard = handlerClickCard;
+
 
     this.like = this.like.bind(this);
     this.remove = this.remove.bind(this);
@@ -30,8 +35,6 @@ class Card {
   }
 
   creatCard() {
-    const cardOwner = mainApi.getCardOwner();
-
     const placeCard = Card.createElementCard('div', 'place-card');
     placeCard
       .appendChild(
@@ -57,7 +60,7 @@ class Card {
 
     if (
       this.cardParametrs.likes.some(item => {
-        return item._id === cardOwner._id;
+        return item._id === this.profileOwner._id;
       })
     ) {
       placeCard
@@ -75,7 +78,7 @@ class Card {
         )
       );
 
-    if (this.cardParametrs.owner._id === cardOwner._id) {
+    if (this.cardParametrs.owner._id === this.profileOwner._id) {
       placeCard
         .querySelector('.place-card__delete-icon')
         .classList.add('place-card__delete-icon_owner');
@@ -100,7 +103,7 @@ class Card {
 
   openTrueImg(event) {
     if (!event.target.classList.contains('place-card__delete-icon')) {
-      mainApi.imagePopupOpen();
+      this.handlerClickCard();
       const img = new Image();
       img.src = this.cardParametrs.link;
       document.querySelector('.popup__content_img').setAttribute(
