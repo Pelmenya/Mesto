@@ -1,9 +1,8 @@
 class CardList {
-  constructor(container, initialCards, profileOwner, handlerClickCard) {
+  constructor(container, initialCards, newItemCreate) {
     this.playList = container;
     this.cards = initialCards;
-    this.profileOwner = Object.assign(profileOwner);
-    this.handlerClickCard = handlerClickCard;
+    this.newItemCreate = newItemCreate;
     this.render();
   }
 
@@ -13,13 +12,11 @@ class CardList {
     const img = new Image();
 
     img.onload = () => {
-      const newCard = new Card(obj, this.profileOwner, this.handlerClickCard);
-      this.playList.appendChild(newCard.card);
+      this.playList.appendChild(this.newItemCreate(obj).card);
     };
     img.onerror = () => {
       obj.link = './images/noimage.png';
-      const newCard = new Card(obj, this.profileOwner, this.handlerClickCard);
-      this.playList.appendChild(newCard.card);
+      this.playList.appendChild(this.newItemCreate(obj).card);
     };
     img.src = item.link;
   }

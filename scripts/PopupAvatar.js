@@ -6,7 +6,7 @@ class PopupAvatar extends PopupPlace {
     item.avatar = image.value;
 
     const img = new Image();
-    img.onload = () => mainApi.patchProfile(item, '/avatar');
+    img.onload = () => this.hendlerSubmit(item, '/avatar');
     img.onerror = () => alert('Ошибка загрузки рисунка');
     img.src = item.avatar;
 

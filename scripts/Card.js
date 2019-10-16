@@ -1,10 +1,12 @@
 class Card {
-  constructor(item, profileOwner, handlerClickCard) {
+  constructor(item, profileOwner, imagePopupOpen, deleteCard, likeCard) {
     this.cardParametrs = Object.assign(item);
 
     this.profileOwner = Object.assign(profileOwner);
 
-    this.handlerClickCard = handlerClickCard;
+    this.imagePopupOpen = imagePopupOpen;
+    this.deleteCard = deleteCard;
+    this.likeCard = likeCard;
 
 
     this.like = this.like.bind(this);
@@ -88,22 +90,22 @@ class Card {
 
   like() {
     if (!this.likeButton.classList.contains('place-card__like-icon_liked')) {
-      mainApi.likeCard(this.cardParametrs._id, 'PUT', this.card);
+      this.likeCard(this.cardParametrs._id, 'PUT', this.card);
     } else {
-      mainApi.likeCard(this.cardParametrs._id, 'DELETE', this.card);
+      this.likeCard(this.cardParametrs._id, 'DELETE', this.card);
     }
   }
 
   remove() {
     const openDialog = confirm('Вы действительно хотите удалить карточку?');
     if (openDialog) {
-      mainApi.deleteCard(this.cardParametrs._id, this.card);
+      this.deleteCard(this.cardParametrs._id, this.card);
     }
   }
 
   openTrueImg(event) {
     if (!event.target.classList.contains('place-card__delete-icon')) {
-      this.handlerClickCard();
+      this.imagePopupOpen();
       const img = new Image();
       img.src = this.cardParametrs.link;
       document.querySelector('.popup__content_img').setAttribute(

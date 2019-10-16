@@ -55,8 +55,6 @@ function main() {
       });
   }
 
- 
-
   // Удаление карточки
   function deleteCard(cardId, card) {
     loaderPopup.open();
@@ -99,12 +97,14 @@ function main() {
 
   const editPopup = new PopupEdit(
     document.querySelector('.popup-edit'),
-    document.querySelector('.user-info__button-edit')
+    document.querySelector('.user-info__button-edit'),
+    patchProfile
   );
 
   const avatarPopup = new PopupAvatar(
     document.querySelector('.popup-avatar'),
-    document.querySelector('.user-info__photo')
+    document.querySelector('.user-info__photo'),
+    patchProfile
   );
 
   const imagePopup = new PopupImage(document.querySelector('.popup-image'));
@@ -132,19 +132,22 @@ function main() {
       alert('Ошибка: ' + err);
     });
 
+  function newItemCreate(obj) {
+    const newCard = new Card(obj, profileOwner, imagePopupOpen, deleteCard, likeCard);
+    return newCard;
+  }
+
   // Загрузка карточек
   const promiseCardList = apiServer
     .getInitialCards()
     .then(cards => {
       loaderPopup.close();
-      return new CardList(document.querySelector('.places-list'), cards, profileOwner, imagePopupOpen);
+      return new CardList(document.querySelector('.places-list'), cards, newItemCreate);
     })
     .catch(err => {
       loaderPopup.close();
       alert('Ошибка: ' + err);
     });
-
-  return {  patchProfile, deleteCard, likeCard };
 }
 
-const mainApi = main();
+main();

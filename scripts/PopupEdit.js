@@ -18,7 +18,7 @@ class PopupEdit extends PopupPlace {
     const item = {};
     [item.name, item.about] = [person.value, job.value];
 
-    mainApi.patchProfile(item, '');
+    this.hendlerSubmit(item, '');
 
     event.preventDefault();
     this.close();
