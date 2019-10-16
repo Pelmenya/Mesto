@@ -1,4 +1,6 @@
-class PopupAvatar extends PopupPlace {
+import PopupPlace from './PopupPlace';
+
+export default class PopupAvatar extends PopupPlace {
   submitForm(event) {
     const { image } = this.popupForm.elements;
     const item = {};

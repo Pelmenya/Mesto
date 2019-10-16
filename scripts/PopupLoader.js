@@ -1,4 +1,4 @@
-class PopupLoader {
+export default class PopupLoader {
   constructor(windowPopup) {
     this.popup = windowPopup;
   }

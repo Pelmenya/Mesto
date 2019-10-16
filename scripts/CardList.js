@@ -1,4 +1,4 @@
-class CardList {
+export default class CardList {
   constructor(container, initialCards, newItemCreate) {
     this.playList = container;
     this.cards = initialCards;

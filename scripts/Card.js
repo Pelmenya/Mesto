@@ -1,4 +1,4 @@
-class Card {
+export default class Card {
   constructor(item, profileOwner, imagePopupOpen, deleteCard, likeCard) {
     this.cardParametrs = Object.assign(item);
 

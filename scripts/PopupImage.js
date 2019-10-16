@@ -1,4 +1,6 @@
-class PopupImage extends PopupLoader {
+import PopupLoader from './PopupLoader';
+
+export default class PopupImage extends PopupLoader {
   constructor(windowPopup) {
     super(windowPopup);
     this.close = this.close.bind(this);

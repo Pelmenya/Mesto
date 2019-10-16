@@ -1,4 +1,6 @@
-class PopupEdit extends PopupPlace {
+import PopupPlace from './PopupPlace';
+
+export default class PopupEdit extends PopupPlace {
   // Обработчик нажатия кнопки для открытия popup
   hendlerPopupOpen() {
     this.popupForm.querySelector('.popup__button').setAttribute('disabled', true);

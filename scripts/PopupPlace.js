@@ -1,4 +1,6 @@
-class PopupPlace extends PopupImage {
+import PopupImage from './PopupImage';
+
+export default class PopupPlace extends PopupImage {
   constructor(windowPopup, openPopupButton, hendlerSubmit) {
     super(windowPopup);
 
