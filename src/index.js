@@ -1,18 +1,21 @@
-import Api from '../scripts/Api';
-import Card from '../scripts/Card';
-import CardList from '../scripts/CardList';
-import PopupAvatar from '../scripts/PopupAvatar';
-import PopupEdit from '../scripts/PopupEdit';
-import PopupImage from '../scripts/PopupImage';
-import PopupLoader from '../scripts/PopupLoader';
-import PopupPlace from '../scripts/PopupPlace';
+import './pages/index.css';
+import Api from './scripts/Api';
+import Card from './scripts/Card';
+import CardList from './scripts/CardList';
+import PopupAvatar from './scripts/PopupAvatar';
+import PopupEdit from './scripts/PopupEdit';
+import PopupImage from './scripts/PopupImage';
+import PopupLoader from './scripts/PopupLoader';
+import PopupPlace from './scripts/PopupPlace';
 
 function main() {
   /* Константы */
-  const baseUrl = 'http://95.216.175.5/cohort3';
+
+  const  serverUrl = NODE_ENV === 'development' ? 'http://praktikum.tk/cohort3' : 'https://praktikum.tk/cohort3';
+
   const authorizationKey = '14224aae-5367-4a26-9bdd-07fdc9139edf';
 
-  const apiServer = new Api(baseUrl, {
+  const apiServer = new Api(serverUrl, {
     headers: {
       authorization: authorizationKey,
       'Content-Type': 'application/json; charset=UTF-8',
