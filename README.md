@@ -14,5 +14,3 @@
 `git clone https://github.com/Pelmenya/Mesto.git`
 
 
-
-
