@@ -15,7 +15,7 @@ export default class CardList {
       this.playList.appendChild(this.newItemCreate(obj).card);
     };
     img.onerror = () => {
-      obj.link = 'http://margr.ru/assets/images/no-image.jpg';
+      obj.link = 'https://anteycentr.ru/UserFiles/Image/513/antey513_0004.jpg';
       this.playList.appendChild(this.newItemCreate(obj).card);
     };
     img.src = item.link;
