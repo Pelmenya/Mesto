@@ -9,7 +9,7 @@
 
 ### Установка проекта
 Для установки проекта на свой компьютер нужно запустить команду
-git clone https://github.com/Pelmenya/Mesto.git
+`git clone https://github.com/Pelmenya/Mesto.git`
 
 
 
