@@ -1,9 +1,21 @@
+import './pages/index.css';
+import Api from './scripts/Api';
+import Card from './scripts/Card';
+import CardList from './scripts/CardList';
+import PopupAvatar from './scripts/PopupAvatar';
+import PopupEdit from './scripts/PopupEdit';
+import PopupImage from './scripts/PopupImage';
+import PopupLoader from './scripts/PopupLoader';
+import PopupPlace from './scripts/PopupPlace';
+
 function main() {
   /* Константы */
-  const baseUrl = 'http://95.216.175.5/cohort3';
+
+  const  serverUrl = NODE_ENV === 'development' ? 'http://praktikum.tk/cohort3' : 'https://praktikum.tk/cohort3';
+
   const authorizationKey = '14224aae-5367-4a26-9bdd-07fdc9139edf';
 
-  const apiServer = new Api(baseUrl, {
+  const apiServer = new Api(serverUrl, {
     headers: {
       authorization: authorizationKey,
       'Content-Type': 'application/json; charset=UTF-8',
@@ -13,17 +25,20 @@ function main() {
   // Объекты для работы с popups
   const popupPlace = new PopupPlace(
     document.querySelector('.popup-place'),
-    document.querySelector('.user-info__button')
+    document.querySelector('.user-info__button'),
+    addCard
   );
 
   const editPopup = new PopupEdit(
     document.querySelector('.popup-edit'),
-    document.querySelector('.user-info__button-edit')
+    document.querySelector('.user-info__button-edit'),
+    patchProfile
   );
 
   const avatarPopup = new PopupAvatar(
     document.querySelector('.popup-avatar'),
-    document.querySelector('.user-info__photo')
+    document.querySelector('.user-info__photo'),
+    patchProfile
   );
 
   const imagePopup = new PopupImage(document.querySelector('.popup-image'));
@@ -33,38 +48,9 @@ function main() {
   // инициализация страницы
   // Мое второе я
   const profileOwner = {};
-  // Два способа достать [[PromiseValue]]
-  // Загрузка профиля (1. Способ)
-  // получаем ссылку на объект профиля переменную Promise
-
-  loaderPopup.open();
-  apiServer
-    .getProfileOwner()
-    .then(profile => {
-      Object.assign(profileOwner, profile);
-      document.querySelector('.user-info__photo').style.backgroundImage = `url(${profile.avatar})`;
-      document.querySelector('.user-info__name').textContent = profile.name;
-      document.querySelector('.user-info__job').textContent = profile.about;
-    })
-    .catch(err => {
-      loaderPopup.close();
-      alert('Ошибка: ' + err);
-    });
-
-  // Загрузка карточек
-  const promiseCardList = apiServer
-    .getInitialCards()
-    .then(cards => {
-      loaderPopup.close();
-      return new CardList(document.querySelector('.places-list'), cards);
-    })
-    .catch(err => {
-      loaderPopup.close();
-      alert('Ошибка: ' + err);
-    });
 
   // Добавление карточки
-  // Достаем пременную Promise через метод then (2. Способ)
+  // Достаем пременную Promise через метод then (2. Способ) callBack
   function addCard(item) {
     loaderPopup.open();
     apiServer
@@ -79,12 +65,18 @@ function main() {
       });
   }
 
-  // Открытие popup с рисунком
-  function imagePopupOpen() {
+  // Открытие popup с рисунком callBack
+  function imagePopupOpen(link) {
+    const img = new Image();
+      img.src = link;
+      document.querySelector('.popup__content_img').style = 
+        `width: ${img.naturalWidth}px; 
+         height: ${img.naturalHeight}px; 
+         background-image: url(${link});`;
     imagePopup.open();
   }
 
-  // Редактирование профиля
+  // Редактирование профиля callBack
   function patchProfile(item, path) {
     loaderPopup.open();
     apiServer
@@ -108,12 +100,7 @@ function main() {
       });
   }
 
-  // Для карточек, чей профиль?
-  function getCardOwner() {
-    return profileOwner;
-  }
-
-  // Удаление карточки
+  // Удаление карточки callBack
   function deleteCard(cardId, card) {
     loaderPopup.open();
     apiServer
@@ -128,7 +115,7 @@ function main() {
       });
   }
 
-  // Лайк и дизлайк карточки
+  // Лайк и дизлайк карточки callBack
   function likeCard(cardId, queryMethod, cardElement) {
     loaderPopup.open();
     apiServer
@@ -145,8 +132,40 @@ function main() {
         alert('Ошибка: ' + err);
       });
   }
+  // Создание карточки callBack
+  function newItemCreate(obj) {
+    const newCard = new Card(obj, profileOwner, imagePopupOpen, deleteCard, likeCard);
+    return newCard;
+  }
+  // Два способа достать [[PromiseValue]]
+  // Загрузка профиля (1. Способ)
+  // получаем ссылку на объект профиля переменную Promise
 
-  return { addCard, imagePopupOpen, patchProfile, getCardOwner, deleteCard, likeCard };
+  loaderPopup.open();
+  apiServer
+    .getProfileOwner()
+    .then(profile => {
+      Object.assign(profileOwner, profile);
+      document.querySelector('.user-info__photo').style.backgroundImage = `url(${profile.avatar})`;
+      document.querySelector('.user-info__name').textContent = profile.name;
+      document.querySelector('.user-info__job').textContent = profile.about;
+    })
+    .catch(err => {
+      loaderPopup.close();
+      alert('Ошибка: ' + err);
+    });
+
+  // Загрузка карточек
+  const promiseCardList = apiServer
+    .getInitialCards()
+    .then(cards => {
+      loaderPopup.close();
+      return new CardList(document.querySelector('.places-list'), cards, newItemCreate);
+    })
+    .catch(err => {
+      loaderPopup.close();
+      alert('Ошибка: ' + err);
+    });
 }
 
-const mainApi = main();
+main();

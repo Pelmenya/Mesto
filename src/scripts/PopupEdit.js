@@ -1,4 +1,6 @@
-class PopupEdit extends PopupPlace {
+import PopupPlace from './PopupPlace';
+
+export default class PopupEdit extends PopupPlace {
   // Обработчик нажатия кнопки для открытия popup
   hendlerPopupOpen() {
     this.popupForm.querySelector('.popup__button').setAttribute('disabled', true);
@@ -18,7 +20,7 @@ class PopupEdit extends PopupPlace {
     const item = {};
     [item.name, item.about] = [person.value, job.value];
 
-    mainApi.patchProfile(item, '');
+    this.hendlerSubmit(item, '');
 
     event.preventDefault();
     this.close();

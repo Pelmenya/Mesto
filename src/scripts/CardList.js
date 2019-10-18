@@ -1,7 +1,8 @@
-class CardList {
-  constructor(container, initialCards) {
+export default class CardList {
+  constructor(container, initialCards, newItemCreate) {
     this.playList = container;
     this.cards = initialCards;
+    this.newItemCreate = newItemCreate;
     this.render();
   }
 
@@ -11,13 +12,11 @@ class CardList {
     const img = new Image();
 
     img.onload = () => {
-      const newCard = new Card(obj);
-      this.playList.appendChild(newCard.card);
+      this.playList.appendChild(this.newItemCreate(obj).card);
     };
     img.onerror = () => {
-      obj.link = './images/noimage.png';
-      const newCard = new Card(obj);
-      this.playList.appendChild(newCard.card);
+      obj.link = 'https://anteycentr.ru/UserFiles/Image/513/antey513_0004.jpg';
+      this.playList.appendChild(this.newItemCreate(obj).card);
     };
     img.src = item.link;
   }
