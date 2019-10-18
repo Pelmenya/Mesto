@@ -19,11 +19,11 @@ export default class PopupPlace extends PopupImage {
 
     this.hendlerInputForm = this.hendlerInputForm.bind(this);
     this.submitForm = this.submitForm.bind(this);
-    this.hendlerInput = this.hendlerInput.bind(this);
+    this.hendlerEntryInput = this.hendlerEntryInput.bind(this);
 
     this.popupForm.addEventListener('input', this.hendlerInputForm);
     this.popupForm.addEventListener('submit', this.submitForm);
-    this.initalInputsListener();
+    this.initializingInputsListeners();
     // Делаем при нажатии кнопки формы
     this.hendlerSubmit = hendlerSubmit;
   }
@@ -31,9 +31,9 @@ export default class PopupPlace extends PopupImage {
 
   // Добавление слушателей для inputs
 
-  initalInputsListener() {
+  initializingInputsListeners() {
     Object.keys(this.inputs).forEach(index => {
-      this.inputs[index].addEventListener('input', this.hendlerInput);
+      this.inputs[index].addEventListener('input', this.hendlerEntryInput);
     });
   }
 
@@ -59,7 +59,7 @@ export default class PopupPlace extends PopupImage {
   }
   // обработчик ввода в input
 
-  hendlerInput(event) {
+  hendlerEntryInput(event) {
     this.popupForm.querySelector(`.popup__error_${event.target.name}`).textContent = '';
     let errorStr = '';
     if (event.target.type === 'text') errorStr = this.ERROR_TEXT;
@@ -69,13 +69,13 @@ export default class PopupPlace extends PopupImage {
   // обработчик ввода в form
 
   hendlerInputForm() {
-    this.popupForm.querySelector('.popup__button').setAttribute('disabled', true);
+    this.popupForm.querySelector('.popup__button').disabled = true;
 
     const valid = !Object.keys(this.inputs).some(index => {
       return !this.inputs[index].checkValidity() || this.inputs[index].value === '';
     });
 
-    if (valid) this.popupForm.querySelector('.popup__button').removeAttribute('disabled');
+    if (valid) this.popupForm.querySelector('.popup__button').disabled = false;
   }
   // Обработчик нажатия кнопки для открытия popup
 

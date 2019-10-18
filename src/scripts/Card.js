@@ -1,3 +1,5 @@
+import createElementDOM from "./fuctions";
+
 export default class Card {
   constructor(item, profileOwner, imagePopupOpen, deleteCard, likeCard) {
     this.cardParametrs = Object.assign(item);
@@ -8,12 +10,11 @@ export default class Card {
     this.deleteCard = deleteCard;
     this.likeCard = likeCard;
 
-
     this.like = this.like.bind(this);
     this.remove = this.remove.bind(this);
     this.openTrueImg = this.openTrueImg.bind(this);
 
-    this.card = this.creatCard();
+    this.card = this.createCard();
 
     this.likeButton = this.card.querySelector('.place-card__like-icon');
     this.removeButton = this.card.querySelector('.place-card__delete-icon');
@@ -24,41 +25,29 @@ export default class Card {
     this.cardImg.addEventListener('click', this.openTrueImg);
   }
 
-  static createElementCard(element, classElement, textContent = false, styleElement = false) {
-    const newElement = document.createElement(element);
-    newElement.className = classElement;
-    if (textContent !== false) {
-      newElement.textContent = textContent;
-    }
-    if (styleElement !== false) {
-      newElement.setAttribute('style', styleElement);
-    }
-    return newElement;
-  }
-
-  creatCard() {
-    const placeCard = Card.createElementCard('div', 'place-card');
+  createCard() {
+    const placeCard = createElementDOM('div', 'place-card');
     placeCard
       .appendChild(
-        Card.createElementCard(
+        createElementDOM(
           'div',
           'place-card__image',
           false,
           `background-image: url(${this.cardParametrs.link});`
         )
       )
-      .appendChild(Card.createElementCard('button', 'place-card__delete-icon'));
+      .appendChild(createElementDOM('button', 'place-card__delete-icon'));
     placeCard
-      .appendChild(Card.createElementCard('div', 'place-card__description'))
-      .appendChild(Card.createElementCard('h3', 'place-card__name', this.cardParametrs.name));
+      .appendChild(createElementDOM('div', 'place-card__description'))
+      .appendChild(createElementDOM('h3', 'place-card__name', this.cardParametrs.name));
 
     placeCard
       .querySelector('.place-card__description')
-      .appendChild(Card.createElementCard('div', 'place-card__like-container'));
+      .appendChild(createElementDOM('div', 'place-card__like-container'));
 
     placeCard
       .querySelector('.place-card__like-container')
-      .appendChild(Card.createElementCard('button', 'place-card__like-icon'));
+      .appendChild(createElementDOM('button', 'place-card__like-icon'));
 
     if (
       this.cardParametrs.likes.some(item => {
@@ -73,7 +62,7 @@ export default class Card {
     placeCard
       .querySelector('.place-card__like-container')
       .appendChild(
-        Card.createElementCard(
+        createElementDOM(
           'span',
           'place-card__like-counter',
           `${this.cardParametrs.likes.length}`
@@ -89,7 +78,11 @@ export default class Card {
   }
 
   like() {
-    if (!this.likeButton.classList.contains('place-card__like-icon_liked')) {
+    if (
+      this.cardParametrs.likes.some(item => {
+        return item._id === this.profileOwner._id;
+      })
+    ) {
       this.likeCard(this.cardParametrs._id, 'PUT', this.card);
     } else {
       this.likeCard(this.cardParametrs._id, 'DELETE', this.card);
@@ -105,15 +98,7 @@ export default class Card {
 
   openTrueImg(event) {
     if (!event.target.classList.contains('place-card__delete-icon')) {
-      this.imagePopupOpen();
-      const img = new Image();
-      img.src = this.cardParametrs.link;
-      document.querySelector('.popup__content_img').setAttribute(
-        'style',
-        `width: ${img.naturalWidth}px; 
-     height: ${img.naturalHeight}px; 
-     background-image: url(${this.cardParametrs.link});`
-      );
+      this.imagePopupOpen(this.cardParametrs.link);
     }
   }
 }

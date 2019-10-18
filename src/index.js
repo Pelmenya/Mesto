@@ -66,7 +66,13 @@ function main() {
   }
 
   // Открытие popup с рисунком callBack
-  function imagePopupOpen() {
+  function imagePopupOpen(link) {
+    const img = new Image();
+      img.src = link;
+      document.querySelector('.popup__content_img').style = 
+        `width: ${img.naturalWidth}px; 
+         height: ${img.naturalHeight}px; 
+         background-image: url(${link});`;
     imagePopup.open();
   }
 
