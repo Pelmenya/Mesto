@@ -1,4 +1,4 @@
-import createElementDOM from "./fuctions";
+import createElementDOM from './fuctions';
 
 export default class Card {
   constructor(item, profileOwner, imagePopupOpen, deleteCard, likeCard) {
@@ -62,11 +62,7 @@ export default class Card {
     placeCard
       .querySelector('.place-card__like-container')
       .appendChild(
-        createElementDOM(
-          'span',
-          'place-card__like-counter',
-          `${this.cardParametrs.likes.length}`
-        )
+        createElementDOM('span', 'place-card__like-counter', `${this.cardParametrs.likes.length}`)
       );
 
     if (this.cardParametrs.owner._id === this.profileOwner._id) {
@@ -78,14 +74,18 @@ export default class Card {
   }
 
   like() {
+    let indexProfileLikes;
     if (
-      this.cardParametrs.likes.some(item => {
+      this.cardParametrs.likes.some((item, index) => {
+        indexProfileLikes = index;
         return item._id === this.profileOwner._id;
       })
     ) {
-      this.likeCard(this.cardParametrs._id, 'PUT', this.card);
-    } else {
       this.likeCard(this.cardParametrs._id, 'DELETE', this.card);
+      this.cardParametrs.likes.splice(indexProfileLikes, 1);
+    } else {
+      this.likeCard(this.cardParametrs._id, 'PUT', this.card);
+      this.cardParametrs.likes.push(this.profileOwner);
     }
   }
 

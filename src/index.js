@@ -121,6 +121,7 @@ function main() {
     apiServer
       .likeCardOnServer(cardId, queryMethod)
       .then(card => {
+        console.log(card);
         cardElement.querySelector('.place-card__like-counter').textContent = card.likes.length;
         cardElement
           .querySelector('.place-card__like-icon')
