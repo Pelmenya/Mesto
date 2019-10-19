@@ -1,5 +1,5 @@
 # Проектная работа №11 "Mesto" 
-[ver 0.0.6  https://pelmenya.github.io/Mesto/]
+[ver 0.0.8  https://pelmenya.github.io/Mesto/]
 
 ##  Тема: "Git, Webpack, JS-модули"
 
